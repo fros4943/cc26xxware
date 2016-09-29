@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ccfg.c
-*  Revised:        $Date: 2015-07-01 09:11:10 +0200 (on, 01 jul 2015) $
-*  Revision:       $Revision: 15909 $
+*  Revised:        $Date: 2016-03-14 10:46:32 +0100 (ma, 14 mar 2016) $
+*  Revision:       $Revision: 16862 $
 *
 *  Description:    Customer Configuration for CC26xx device family (HW rev 2).
 *
@@ -61,155 +61,257 @@
 //*****************************************************************************
 
 //#####################################
-// Alternate DC/DC settings
+// Alternative DC/DC settings
 //#####################################
 
-#define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING    0x0    // Alternate DC/DC setting enabled
-// #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING 0x1    // Alternate DC/DC setting disabled
+#ifndef SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING
+#define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING    0x0    // Alternative DC/DC setting enabled
+// #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING 0x1    // Alternative DC/DC setting disabled
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_1_ALT_DCDC_VMIN
 #define SET_CCFG_MODE_CONF_1_ALT_DCDC_VMIN              0x8        // 2.25V
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_1_ALT_DCDC_DITHER_EN
 #define SET_CCFG_MODE_CONF_1_ALT_DCDC_DITHER_EN         0x0        // Disable
 // #define SET_CCFG_MODE_CONF_1_ALT_DCDC_DITHER_EN      0x1        // Enable
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_1_ALT_DCDC_IPEAK
 #define SET_CCFG_MODE_CONF_1_ALT_DCDC_IPEAK             0x2        // 39mA
+#endif
 
 //#####################################
 // XOSC override settings
 //#####################################
 
+#ifndef SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR
 // #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR     0x0        // Enable override
 #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR        0x1        // Disable override
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_1_DELTA_IBIAS_INIT
 #define SET_CCFG_MODE_CONF_1_DELTA_IBIAS_INIT           0x0        // Delta = 0
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_1_DELTA_IBIAS_OFFSET
 #define SET_CCFG_MODE_CONF_1_DELTA_IBIAS_OFFSET         0x0        // Delta = 0
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_1_XOSC_MAX_START
 #define SET_CCFG_MODE_CONF_1_XOSC_MAX_START             0x10       // 1600us
+#endif
 
 //#####################################
 // Power settings
 //#####################################
 
-#define SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA        0xF        // Signed delta value to apply to the VDDR_TRIM_SLEEP target, minus one
+#ifndef SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA
+#define SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA        0xF        // Signed delta value +1 to apply to the VDDR_TRIM_SLEEP target (0xF=-1=default=no compensation)
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_DCDC_RECHARGE
 #define SET_CCFG_MODE_CONF_DCDC_RECHARGE                0x0        // Use the DC/DC during recharge in powerdown
 // #define SET_CCFG_MODE_CONF_DCDC_RECHARGE             0x1        // Do not use the DC/DC during recharge in powerdown
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_DCDC_ACTIVE
 #define SET_CCFG_MODE_CONF_DCDC_ACTIVE                  0x0        // Use the DC/DC during active mode
 // #define SET_CCFG_MODE_CONF_DCDC_ACTIVE               0x1        // Do not use the DC/DC during active mode
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_VDDS_BOD_LEVEL
 // #define SET_CCFG_MODE_CONF_VDDS_BOD_LEVEL            0x0        // VDDS BOD level is 2.0V
 #define SET_CCFG_MODE_CONF_VDDS_BOD_LEVEL               0x1        // VDDS BOD level is 1.8V (or 1.65V for external regulator mode)
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_VDDR_CAP
 #define SET_CCFG_MODE_CONF_VDDR_CAP                     0x3A       // Unsigned 8-bit integer representing the min. decoupling capacitance on VDDR in units of 100nF
+#endif
+
+#ifndef SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC
+#define SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC           0x1        // Temperature compensation on VDDR sleep trim disabled (default)
+// #define SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC        0x0        // Temperature compensation on VDDR sleep trim enabled
+#endif
 
 //#####################################
 // Clock settings
 //#####################################
 
+#ifndef SET_CCFG_MODE_CONF_SCLK_LF_OPTION
 // #define SET_CCFG_MODE_CONF_SCLK_LF_OPTION            0x0        // LF clock derived from High Frequency XOSC
 // #define SET_CCFG_MODE_CONF_SCLK_LF_OPTION            0x1        // External LF clock
 #define SET_CCFG_MODE_CONF_SCLK_LF_OPTION               0x2        // LF XOSC
 // #define SET_CCFG_MODE_CONF_SCLK_LF_OPTION            0x3        // LF RCOSC
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_XOSC_CAP_MOD
 // #define SET_CCFG_MODE_CONF_XOSC_CAP_MOD              0x0        // Apply cap-array delta
 #define SET_CCFG_MODE_CONF_XOSC_CAP_MOD                 0x1        // Don't apply cap-array delta 
+#endif
 
+#ifndef SET_CCFG_MODE_CONF_XOSC_CAPARRAY_DELTA
 #define SET_CCFG_MODE_CONF_XOSC_CAPARRAY_DELTA          0xFF       // Signed 8-bit value, directly modifying trimmed XOSC cap-array value
+#endif
 
+#ifndef SET_CCFG_EXT_LF_CLK_DIO
 #define SET_CCFG_EXT_LF_CLK_DIO                         0x01       // DIO number if using external LF clock
+#endif
 
+#ifndef SET_CCFG_EXT_LF_CLK_RTC_INCREMENT
 #define SET_CCFG_EXT_LF_CLK_RTC_INCREMENT               0x800000   // RTC increment representing the external LF clock frequency
+#endif
 
 //#####################################
 // Special HF clock source setting
 //#####################################
-// #define SET_CCFG_MODE_CONF_XOSC_FREQ                 0x1        // Use BAW oscillator as HF source (if executed on a BAW chip, otherwise uing default (=3))
+#ifndef SET_CCFG_MODE_CONF_XOSC_FREQ
+// #define SET_CCFG_MODE_CONF_XOSC_FREQ                 0x1        // Use HPOSC as HF source (if executing on a HPOSC chip, otherwise using default (=0x3))
 // #define SET_CCFG_MODE_CONF_XOSC_FREQ                 0x2        // HF source is a 48 MHz xtal
 #define SET_CCFG_MODE_CONF_XOSC_FREQ                    0x3        // HF source is a 24 MHz xtal (default)
+#endif
 
 //#####################################
 // Bootloader settings
 //#####################################
 
-// #define SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE         0x00       // Disable ROM boot loader
-#define SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE            0xC5       // Enable ROM boot loader
+#ifndef SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE
+#define SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE            0x00       // Disable ROM boot loader
+// #define SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE         0xC5       // Enable ROM boot loader
+#endif
 
+#ifndef SET_CCFG_BL_CONFIG_BL_LEVEL
 // #define SET_CCFG_BL_CONFIG_BL_LEVEL                  0x0        // Active low to open boot loader backdoor
 #define SET_CCFG_BL_CONFIG_BL_LEVEL                     0x1        // Active high to open boot loader backdoor
+#endif
 
+#ifndef SET_CCFG_BL_CONFIG_BL_PIN_NUMBER
 #define SET_CCFG_BL_CONFIG_BL_PIN_NUMBER                0xFF       // DIO number for boot loader backdoor
+#endif
 
+#ifndef SET_CCFG_BL_CONFIG_BL_ENABLE
 // #define SET_CCFG_BL_CONFIG_BL_ENABLE                 0xC5       // Enabled boot loader backdoor
 #define SET_CCFG_BL_CONFIG_BL_ENABLE                    0xFF       // Disabled boot loader backdoor
+#endif
 
 //#####################################
 // Debug access settings
 //#####################################
 
-// #define SET_CCFG_CCFG_TI_OPTIONS_TI_FA_ENABLE        0x00       // Disable unlocking of TI FA option.
-#define SET_CCFG_CCFG_TI_OPTIONS_TI_FA_ENABLE           0xC5       // Enable unlocking of TI FA option with the unlock code
+#ifndef SET_CCFG_CCFG_TI_OPTIONS_TI_FA_ENABLE
+#define SET_CCFG_CCFG_TI_OPTIONS_TI_FA_ENABLE           0x00       // Disable unlocking of TI FA option.
+// #define SET_CCFG_CCFG_TI_OPTIONS_TI_FA_ENABLE        0xC5       // Enable unlocking of TI FA option with the unlock code
+#endif
 
+#ifndef SET_CCFG_CCFG_TAP_DAP_0_CPU_DAP_ENABLE
 // #define SET_CCFG_CCFG_TAP_DAP_0_CPU_DAP_ENABLE       0x00       // Access disabled
 #define SET_CCFG_CCFG_TAP_DAP_0_CPU_DAP_ENABLE          0xC5       // Access enabled if also enabled in FCFG
+#endif
 
-// #define SET_CCFG_CCFG_TAP_DAP_0_PRCM_TAP_ENABLE      0x00       // Access disabled
-#define SET_CCFG_CCFG_TAP_DAP_0_PRCM_TAP_ENABLE         0xC5       // Access enabled if also enabled in FCFG
+#ifndef SET_CCFG_CCFG_TAP_DAP_0_PRCM_TAP_ENABLE
+#define SET_CCFG_CCFG_TAP_DAP_0_PRCM_TAP_ENABLE         0x00       // Access disabled
+// #define SET_CCFG_CCFG_TAP_DAP_0_PRCM_TAP_ENABLE      0xC5       // Access enabled if also enabled in FCFG
+#endif
 
+#ifndef SET_CCFG_CCFG_TAP_DAP_0_TEST_TAP_ENABLE
 // #define SET_CCFG_CCFG_TAP_DAP_0_TEST_TAP_ENABLE      0x00       // Access disabled
 #define SET_CCFG_CCFG_TAP_DAP_0_TEST_TAP_ENABLE         0xC5       // Access enabled if also enabled in FCFG
+#endif
 
-// #define SET_CCFG_CCFG_TAP_DAP_1_PBIST2_TAP_ENABLE    0x00       // Access disabled
-#define SET_CCFG_CCFG_TAP_DAP_1_PBIST2_TAP_ENABLE       0xC5       // Access enabled if also enabled in FCFG
+#ifndef SET_CCFG_CCFG_TAP_DAP_1_PBIST2_TAP_ENABLE
+#define SET_CCFG_CCFG_TAP_DAP_1_PBIST2_TAP_ENABLE       0x00       // Access disabled
+// #define SET_CCFG_CCFG_TAP_DAP_1_PBIST2_TAP_ENABLE    0xC5       // Access enabled if also enabled in FCFG
+#endif
 
-// #define SET_CCFG_CCFG_TAP_DAP_1_PBIST1_TAP_ENABLE    0x00       // Access disabled
-#define SET_CCFG_CCFG_TAP_DAP_1_PBIST1_TAP_ENABLE       0xC5       // Access enabled if also enabled in FCFG
+#ifndef SET_CCFG_CCFG_TAP_DAP_1_PBIST1_TAP_ENABLE
+#define SET_CCFG_CCFG_TAP_DAP_1_PBIST1_TAP_ENABLE       0x00       // Access disabled
+// #define SET_CCFG_CCFG_TAP_DAP_1_PBIST1_TAP_ENABLE    0xC5       // Access enabled if also enabled in FCFG
+#endif
 
-// #define SET_CCFG_CCFG_TAP_DAP_1_WUC_TAP_ENABLE       0x00       // Access disabled
-#define SET_CCFG_CCFG_TAP_DAP_1_WUC_TAP_ENABLE          0xC5       // Access enabled if also enabled in FCFG
+#ifndef SET_CCFG_CCFG_TAP_DAP_1_WUC_TAP_ENABLE
+#define SET_CCFG_CCFG_TAP_DAP_1_WUC_TAP_ENABLE          0x00       // Access disabled
+// #define SET_CCFG_CCFG_TAP_DAP_1_WUC_TAP_ENABLE       0xC5       // Access enabled if also enabled in FCFG
+#endif
 
 //#####################################
 // Alternative IEEE 802.15.4 MAC address
 //#####################################
+#ifndef SET_CCFG_IEEE_MAC_0
 #define SET_CCFG_IEEE_MAC_0                             0xFFFFFFFF // Bits [31:0]
+#endif
+
+#ifndef SET_CCFG_IEEE_MAC_1
 #define SET_CCFG_IEEE_MAC_1                             0xFFFFFFFF // Bits [63:32]
+#endif
 
 //#####################################
 // Alternative BLE address
 //#####################################
+#ifndef SET_CCFG_IEEE_BLE_0
 #define SET_CCFG_IEEE_BLE_0                             0xFFFFFFFF // Bits [31:0]
+#endif
+
+#ifndef SET_CCFG_IEEE_BLE_1
 #define SET_CCFG_IEEE_BLE_1                             0xFFFFFFFF // Bits [63:32]
+#endif
 
 //#####################################
 // Flash erase settings
 //#####################################
 
+#ifndef SET_CCFG_ERASE_CONF_CHIP_ERASE_DIS_N
 // #define SET_CCFG_ERASE_CONF_CHIP_ERASE_DIS_N         0x0        // Any chip erase request detected during boot will be ignored
 #define SET_CCFG_ERASE_CONF_CHIP_ERASE_DIS_N            0x1        // Any chip erase request detected during boot will be performed by the boot FW
+#endif
 
+#ifndef SET_CCFG_ERASE_CONF_BANK_ERASE_DIS_N
 // #define SET_CCFG_ERASE_CONF_BANK_ERASE_DIS_N         0x0        // Disable the boot loader bank erase function
 #define SET_CCFG_ERASE_CONF_BANK_ERASE_DIS_N            0x1        // Enable the boot loader bank erase function
+#endif
 
 //#####################################
 // Flash image valid
 //#####################################
+#ifndef SET_CCFG_IMAGE_VALID_CONF_IMAGE_VALID
 #define SET_CCFG_IMAGE_VALID_CONF_IMAGE_VALID           0x00000000 // Flash image is valid
 // #define SET_CCFG_IMAGE_VALID_CONF_IMAGE_VALID        <non-zero> // Flash image is invalid, call bootloader
+#endif
 
 //#####################################
 // Flash sector write protection
 //#####################################
+#ifndef SET_CCFG_CCFG_PROT_31_0
 #define SET_CCFG_CCFG_PROT_31_0                         0xFFFFFFFF
+#endif
+
+#ifndef SET_CCFG_CCFG_PROT_63_32
 #define SET_CCFG_CCFG_PROT_63_32                        0xFFFFFFFF
+#endif
+
+#ifndef SET_CCFG_CCFG_PROT_95_64
 #define SET_CCFG_CCFG_PROT_95_64                        0xFFFFFFFF
+#endif
+
+#ifndef SET_CCFG_CCFG_PROT_127_96
 #define SET_CCFG_CCFG_PROT_127_96                       0xFFFFFFFF
+#endif
 
 //#####################################
 // Select between cache or GPRAM
 //#####################################
+#ifndef SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM
 // #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM        0x0        // Cache is disabled and GPRAM is available at 0x11000000-0x11001FFF
 #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM           0x1        // Cache is enabled and GPRAM is disabled (unavailable)
+#endif
+
+//#####################################
+// Select TCXO
+//#####################################
+#ifndef SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_TCXO
+#define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_TCXO            0x1    // Disable TCXO
+// #define SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_TCXO         0x0    // Enable TXCO
+#endif
 
 //*****************************************************************************
 //
@@ -217,7 +319,7 @@
 //
 //*****************************************************************************
 #define SET_CCFG_SIZE_AND_DIS_FLAGS_SIZE_OF_CCFG        0x0058
-#define SET_CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS       0x3FFF
+#define SET_CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS       (CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS_M >> CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS_S)
 
 #define SET_CCFG_MODE_CONF_VDDR_EXT_LOAD                0x1
 #define SET_CCFG_MODE_CONF_RTC_COMP                     0x1
@@ -247,7 +349,7 @@
 // DO NOT EDIT!
 //
 //*****************************************************************************
-#define DEFAULT_CCFG_O_EXT_LF_CLK        ( \
+#define DEFAULT_CCFG_EXT_LF_CLK          ( \
 	 ( ((uint32_t)( SET_CCFG_EXT_LF_CLK_DIO           << CCFG_EXT_LF_CLK_DIO_S           )) | ~CCFG_EXT_LF_CLK_DIO_M           ) & \
 	 ( ((uint32_t)( SET_CCFG_EXT_LF_CLK_RTC_INCREMENT << CCFG_EXT_LF_CLK_RTC_INCREMENT_S )) | ~CCFG_EXT_LF_CLK_RTC_INCREMENT_M ) )
      
@@ -262,6 +364,7 @@
 #define DEFAULT_CCFG_SIZE_AND_DIS_FLAGS  ( \
 	 ( ((uint32_t)( SET_CCFG_SIZE_AND_DIS_FLAGS_SIZE_OF_CCFG         << CCFG_SIZE_AND_DIS_FLAGS_SIZE_OF_CCFG_S         )) | ~CCFG_SIZE_AND_DIS_FLAGS_SIZE_OF_CCFG_M         ) & \
 	 ( ((uint32_t)( SET_CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS        << CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS_S        )) | ~CCFG_SIZE_AND_DIS_FLAGS_DISABLE_FLAGS_M        ) & \
+	 ( ((uint32_t)( SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_TCXO             << CCFG_SIZE_AND_DIS_FLAGS_DIS_TCXO_S             )) | ~CCFG_SIZE_AND_DIS_FLAGS_DIS_TCXO_M             ) & \
 	 ( ((uint32_t)( SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM            << CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM_S            )) | ~CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM_M            ) & \
 	 ( ((uint32_t)( SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING << CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING_S )) | ~CCFG_SIZE_AND_DIS_FLAGS_DIS_ALT_DCDC_SETTING_M ) & \
 	 ( ((uint32_t)( SET_CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR         << CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR_S         )) | ~CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR_M         ) )
@@ -273,6 +376,7 @@
 	 ( ((uint32_t)( SET_CCFG_MODE_CONF_VDDR_EXT_LOAD         << CCFG_MODE_CONF_VDDR_EXT_LOAD_S         )) | ~CCFG_MODE_CONF_VDDR_EXT_LOAD_M         ) & \
 	 ( ((uint32_t)( SET_CCFG_MODE_CONF_VDDS_BOD_LEVEL        << CCFG_MODE_CONF_VDDS_BOD_LEVEL_S        )) | ~CCFG_MODE_CONF_VDDS_BOD_LEVEL_M        ) & \
 	 ( ((uint32_t)( SET_CCFG_MODE_CONF_SCLK_LF_OPTION        << CCFG_MODE_CONF_SCLK_LF_OPTION_S        )) | ~CCFG_MODE_CONF_SCLK_LF_OPTION_M        ) & \
+	 ( ((uint32_t)( SET_CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC    << CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC_S    )) | ~CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC_M    ) & \
 	 ( ((uint32_t)( SET_CCFG_MODE_CONF_RTC_COMP              << CCFG_MODE_CONF_RTC_COMP_S              )) | ~CCFG_MODE_CONF_RTC_COMP_M              ) & \
 	 ( ((uint32_t)( SET_CCFG_MODE_CONF_XOSC_FREQ             << CCFG_MODE_CONF_XOSC_FREQ_S             )) | ~CCFG_MODE_CONF_XOSC_FREQ_M             ) & \
 	 ( ((uint32_t)( SET_CCFG_MODE_CONF_XOSC_CAP_MOD          << CCFG_MODE_CONF_XOSC_CAP_MOD_S          )) | ~CCFG_MODE_CONF_XOSC_CAP_MOD_M          ) & \
@@ -337,42 +441,8 @@
 #define DEFAULT_CCFG_CCFG_PROT_63_32     SET_CCFG_CCFG_PROT_63_32 
 #define DEFAULT_CCFG_CCFG_PROT_95_64     SET_CCFG_CCFG_PROT_95_64 
 #define DEFAULT_CCFG_CCFG_PROT_127_96    SET_CCFG_CCFG_PROT_127_96
-/*---------------------------------------------------------------------------*/
-/* By default lockdown the chip for production */
-#ifndef LOCKDOWN_CHIP
-#define LOCKDOWN_CHIP    1
-#endif /* LOCKDOWN_CHIP */
-/*---------------------------------------------------------------------------*/
-/*
- * Following FUG section 9.1, we disable all debug interfaces etc and ensure we
- * boot directly into the flash firmware without allowing the backdoor to
- * intercept startup procedure. See FUG section 9 and especially 9.1.
- *
- * The secured config
- *    disables all JTAG interfaces
- *    disables TI Failure analysis
- *    disables serial bootloader backdoor
- *    declares the firmware as valid -> bootloader boots directly from firmware
- * We still allow the firmware itself to erase/write to flash to allow FOTA to
- * work - no flash pages are locked.
- *
- * The changes are identical in cc26xx and cc13xx so any patches may need to be
- * mirrored across.
- */
-#if LOCKDOWN_CHIP
-#define CCFG_BL_CONFIG                0x00ffff00
-#define CCFG_CCFG_TI_OPTIONS          0xffffff00
-#define CCFG_CCFG_TAP_DAP_0           0xff000000
-#define CCFG_CCFG_TAP_DAP_1           0xff000000
-#define CCFG_IMAGE_VALID_CONF         0x00000000
-#else /* LOCKDOWN_CHIP */
-#define CCFG_BL_CONFIG                DEFAULT_CCFG_BL_CONFIG
-#define CCFG_CCFG_TI_OPTIONS          DEFAULT_CCFG_CCFG_TI_OPTIONS
-#define CCFG_CCFG_TAP_DAP_0           DEFAULT_CCFG_CCFG_TAP_DAP_0
-#define CCFG_CCFG_TAP_DAP_1           DEFAULT_CCFG_CCFG_TAP_DAP_1
-#define CCFG_IMAGE_VALID_CONF         DEFAULT_CCFG_IMAGE_VALID_CONF
-#endif /* LOCKDOWN_CHIP */
-/*---------------------------------------------------------------------------*/
+
+//*****************************************************************************
 //
 // Customer Configuration Area in Lock Page
 //
@@ -387,7 +457,7 @@ const ccfg_t __ccfg =
 const ccfg_t __ccfg __attribute__((section(".ccfg"))) __attribute__((used)) =
 #endif
 {                                     // Mapped to address
-    DEFAULT_CCFG_O_EXT_LF_CLK       , // 0x50003FA8 (0x50003xxx maps to last
+    DEFAULT_CCFG_EXT_LF_CLK         , // 0x50003FA8 (0x50003xxx maps to last
     DEFAULT_CCFG_MODE_CONF_1        , // 0x50003FAC  sector in FLASH.
     DEFAULT_CCFG_SIZE_AND_DIS_FLAGS , // 0x50003FB0  Independent of FLASH size)
     DEFAULT_CCFG_MODE_CONF          , // 0x50003FB4
@@ -399,15 +469,14 @@ const ccfg_t __ccfg __attribute__((section(".ccfg"))) __attribute__((used)) =
     DEFAULT_CCFG_IEEE_MAC_1         , // 0x50003FCC
     DEFAULT_CCFG_IEEE_BLE_0         , // 0x50003FD0
     DEFAULT_CCFG_IEEE_BLE_1         , // 0x50003FD4
-    CCFG_BL_CONFIG          , // 0x50003FD8
+    DEFAULT_CCFG_BL_CONFIG          , // 0x50003FD8
     DEFAULT_CCFG_ERASE_CONF         , // 0x50003FDC
-    CCFG_CCFG_TI_OPTIONS    , // 0x50003FE0
-    CCFG_CCFG_TAP_DAP_0     , // 0x50003FE4
-    CCFG_CCFG_TAP_DAP_1     , // 0x50003FE8
-    CCFG_IMAGE_VALID_CONF   , // 0x50003FEC
+    DEFAULT_CCFG_CCFG_TI_OPTIONS    , // 0x50003FE0
+    DEFAULT_CCFG_CCFG_TAP_DAP_0     , // 0x50003FE4
+    DEFAULT_CCFG_CCFG_TAP_DAP_1     , // 0x50003FE8
+    DEFAULT_CCFG_IMAGE_VALID_CONF   , // 0x50003FEC
     DEFAULT_CCFG_CCFG_PROT_31_0     , // 0x50003FF0
     DEFAULT_CCFG_CCFG_PROT_63_32    , // 0x50003FF4
     DEFAULT_CCFG_CCFG_PROT_95_64    , // 0x50003FF8
     DEFAULT_CCFG_CCFG_PROT_127_96   , // 0x50003FFC
 };
-/*---------------------------------------------------------------------------*/

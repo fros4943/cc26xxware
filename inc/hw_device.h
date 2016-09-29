@@ -1,9 +1,9 @@
 /******************************************************************************
 *  Filename:       hw_device.h
-*  Revised:        2015-02-10 13:17:04 +0100 (Tue, 10 Feb 2015)
-*  Revision:       42629
+*  Revised:        2015-09-23 13:35:28 +0200 (Wed, 23 Sep 2015)
+*  Revision:       44644
 *
-*  Copyright (c) 2015, Texas Instruments Incorporated
+*  Copyright (c) 2015 - 2016, Texas Instruments Incorporated
 *  All rights reserved.
 *
 *  Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,8 @@
 
 #ifndef __HW_DEVICE_H__
 #define __HW_DEVICE_H__
+
+#include <inc/hw_chip_def.h>
 
 #ifdef CC_GET_CHIP_PACKAGE
 

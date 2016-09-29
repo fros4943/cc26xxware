@@ -1,11 +1,11 @@
 /******************************************************************************
 *  Filename:       prcm.c
-*  Revised:        2015-05-11 10:13:03 +0200 (Mon, 11 May 2015)
-*  Revision:       43466
+*  Revised:        2016-03-04 16:49:38 +0100 (Fri, 04 Mar 2016)
+*  Revision:       45874
 *
 *  Description:    Driver for the PRCM.
 *
-*  Copyright (c) 2015, Texas Instruments Incorporated
+*  Copyright (c) 2015 - 2016, Texas Instruments Incorporated
 *  All rights reserved.
 *
 *  Redistribution and use in source and binary forms, with or without
@@ -346,7 +346,6 @@ PRCMAudioClockConfigSet(uint32_t ui32ClkConfig, uint32_t ui32SampleRate)
 //! Configure the audio clock generation with manual setting of clock divider.
 //
 //*****************************************************************************
-
 void
 PRCMAudioClockConfigSetOverride(uint32_t ui32ClkConfig, uint32_t ui32MstDiv,
                         uint32_t ui32BitDiv, uint32_t ui32WordDiv)
